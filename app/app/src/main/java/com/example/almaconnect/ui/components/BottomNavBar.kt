@@ -8,11 +8,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavHostController
 
 sealed class BottomNavItem(val title: String, val icon: ImageVector, val route: String) {
-    object Home : BottomNavItem("Home", Icons.Default.Home, "home")
-    object Chat : BottomNavItem("Chat", Icons.Default.Add, "chat")
-    object Calendar : BottomNavItem("Calendar", Icons.Default.DateRange, "calendar")
-
-    object Settings : BottomNavItem("Settings", Icons.Default.Settings, "settings")
+    data object Home : BottomNavItem("Home", Icons.Default.Home, "home")
+    data object Chat : BottomNavItem("Chat", Icons.Default.ChatBubble, "chat")
+    data object Calendar : BottomNavItem("Calendar", Icons.Default.DateRange, "calendar")
+    data object Donation : BottomNavItem("Donation", Icons.Default.AttachMoney, "donation")
+    data object Settings : BottomNavItem("Settings", Icons.Default.Settings, "settings")
 }
 
 @Composable
@@ -21,6 +21,7 @@ fun BottomNavBar(navController: NavHostController) {
         BottomNavItem.Home,
         BottomNavItem.Chat,
         BottomNavItem.Calendar,
+        BottomNavItem.Donation,
         BottomNavItem.Settings
     )
 

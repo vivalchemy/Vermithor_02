@@ -7,6 +7,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.padding
 
 @Composable
-fun ChatScreen() {
-    Text(text = "Chat Screen", modifier = Modifier.padding(16.dp))
+fun DonationScreen() {
+    Text(text = "Donation Screen", modifier = Modifier.padding(16.dp))
 }
