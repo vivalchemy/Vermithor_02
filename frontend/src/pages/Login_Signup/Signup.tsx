@@ -45,9 +45,14 @@ export const Signup = () => {
   const {
     register,
     handleSubmit,
-    setValue, // To programmatically set values
+    setValue,
+    watch,
     formState: { errors },
-  } = useForm<FormInputs>();
+  } = useForm<FormInputs>({
+    defaultValues: {
+      userType: "alumni",
+    },
+  });
 
   const mutation = useMutation({
     mutationFn: registerUser,
