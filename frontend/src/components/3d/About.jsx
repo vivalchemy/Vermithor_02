@@ -27,7 +27,7 @@ const ServiceCard = ({ index, title, icon, description, rightIcon, flip }) => ( 
         {/* Vertical line */}
         {/* <div className='absolute inset-y-3 left-1/2 w-0.5 bg-white shadow-glow rounded-full'></div> */}
 
-        <div className={`flex items-center z-10 w-[280px] ${flip && "flex-row-reverse"}`}> {/* Full width for better alignment */}
+        <div className={`flex items-center z-10 w-1/2 ${flip && "flex-row-reverse"}`}> {/* Full width for better alignment */}
           <img
             src={icon}
             alt={title}
@@ -35,10 +35,10 @@ const ServiceCard = ({ index, title, icon, description, rightIcon, flip }) => ( 
           />
 
           <div className='flex flex-col items-start flex-grow'> {/* Changed to flex-grow for proper spacing */}
-            <h3 className='text-white text-[18px] font-bold text-left'>
+            <h3 className='text-black text-[18px] font-bold text-left'>
               {title}
             </h3>
-            <p className='text-white text-[14px] text-left mt-2'>
+            <p className='text-black text-[14px] text-left mt-2'>
               {description}
             </p>
           </div>
@@ -73,13 +73,13 @@ const About = () => {
   return (
     <>
       <motion.div variants={textVariant()}>
-        <p className={styles.sectionSubText}>Introduction</p>
-        <h2 className={styles.sectionHeadText}>Overview.</h2>
+        <p className="sm:text-[18px] text-[14px] text-muted-foreground uppercase tracking-wider">Introduction</p>
+        <h2 className="text-foreground font-bold md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px]">Overview.</h2>
       </motion.div>
 
       <motion.p
         variants={fadeIn("", "", 0.1, 1)}
-        className='mt-4 text-secondary text-[17px] max-w-3xl leading-[30px]'
+        className='mt-4 text-muted-foreground text-[17px] max-w-3xl leading-[30px]'
       >
         Our platform offers a secure donation system for alumni to
         support college projects and initiatives, alongside tools that foster mentorship,

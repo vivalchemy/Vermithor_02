@@ -45,7 +45,7 @@ const services = [
     title: "Alumni Giving Hub",
     icon: web,
     description:
-      "A platform to contribute back to your alma mater through donations and support.",
+      "A dedicated platform where alumni can give back to their alma mater through financial contributions, volunteering, and offering support for various institutional initiatives. Engage in meaningful ways to contribute to scholarships, programs, and more, while fostering a sense of community and growth.",
     rightIcon: creator,
     flip: false,
   },
@@ -53,7 +53,7 @@ const services = [
     title: "Mentorship Connect",
     icon: mobile,
     description:
-      "Connect with experienced alumni for guidance and career advice.",
+      "A networking platform that facilitates direct connections between alumni and current students or fellow alumni seeking guidance. Get career advice, mentorship, and insights from experienced professionals in various fields, and strengthen your professional network through meaningful relationships.",
     leftIcon: creator,
     flip: true,
   },
@@ -61,7 +61,7 @@ const services = [
     title: "Event Calendar",
     icon: backend,
     description:
-      "Stay up-to-date with all upcoming alumni events and reunions.",
+      "Stay informed and never miss an important event with the alumni event calendar. Track upcoming reunions, networking opportunities, and social gatherings organized by your alma mater, ensuring you're always connected and engaged with your alumni community.",
     leftIcon: creator,
     flip: false,
   },
@@ -69,7 +69,7 @@ const services = [
     title: "EventLink",
     icon: creator,
     description:
-      "Access and participate in various alumni-organized events directly.",
+      "Easily access and participate in a variety of alumni-organized events through the EventLink platform. From virtual meetups to in-person gatherings, this hub offers a seamless way to stay involved and join events hosted by alumni groups worldwide.",
     leftIcon: creator,
     flip: true,
   },
