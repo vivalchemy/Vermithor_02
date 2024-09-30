@@ -8,3 +8,4 @@ class SignInForm(forms.Form):
     user_type = forms.ChoiceField(choices=[('student', 'Student'), ('alumni', 'Alumni')])
     graduation_year = forms.IntegerField(required=False)
     current_job = forms.CharField(max_length=100, required=False)  # Only for Alumni
+    password = forms.CharField(widget=forms.PasswordInput)
