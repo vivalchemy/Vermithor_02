@@ -33,6 +33,8 @@ data class Alumni(
 @Composable
 fun ChatLauncherScreen() {
     var searchQuery by remember { mutableStateOf("") }
+    var isChatOpen by remember { mutableStateOf(false) }
+    var selectedAlumni by remember { mutableStateOf<Alumni?>(null) }
     val allAlumni = remember {
         listOf(
             Alumni("John Doe", "Software Engineer", 2024, "https://example.com/avatar1.jpg"),
@@ -48,7 +50,6 @@ fun ChatLauncherScreen() {
         it.name.contains(searchQuery, ignoreCase = true) ||
                 it.designation.contains(searchQuery, ignoreCase = true)
     }
-
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -56,7 +57,7 @@ fun ChatLauncherScreen() {
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    text = "Join Forem",
+                    text = "Join Forum",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -122,7 +123,10 @@ fun AlumniCard(alumni: Alumni) {
                 Text(text = "Graduation Year: ${alumni.graduationYear}")
             }
             Button(
-                onClick = { /* TODO: Implement connect functionality */ }
+                onClick = {
+                    selectedAlumni = alumni
+                    isChatOpen = true
+                }
             ) {
                 Text("Connect")
             }
