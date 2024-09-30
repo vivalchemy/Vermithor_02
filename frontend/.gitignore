@@ -22,4 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# User
 bun.lockb
+package-lock.json
+.env
