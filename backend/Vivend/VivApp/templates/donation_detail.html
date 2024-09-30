@@ -1,0 +1,21 @@
+<!-- donation_detail.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static%}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ donation.project_name }}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Optional CSS -->
+</head>
+<body>
+    <h1>{{ donation.project_name }}</h1>
+    <img src="{{ donation.project_image.url }}" alt="{{ donation.project_name }}">
+    <p><strong>Description:</strong> {{ donation.project_description }}</p>
+    <p><strong>Total Donation Required:</strong> ${{ donation.total_donation_required }}</p>
+    <p><strong>Total Donation Done:</strong> ${{ donation.total_donation_done }}</p>
+    <p><strong>Contact Person:</strong> {{ donation.contact_person }}</p>
+    <a href="{% url 'donation_list' %}">Back to Donation List</a>
+</body>
+</html>

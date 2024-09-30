@@ -1,0 +1,29 @@
+<!-- templates/event_full_details.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Full Details</title>
+</head>
+<body>
+    <h1>All Event Details</h1>
+
+    <!-- Loop through all events and show their full details -->
+    {% for event in events %}
+    <div class="event">
+        <h2>{{ event.event_name }}</h2>
+        <p><strong>Date:</strong> {{ event.date }}</p>
+        <p><strong>Location:</strong> {{ event.location }}</p>
+        <p><strong>Description:</strong> {{ event.event_description }}</p>
+
+        <!-- Display image if available -->
+        <img src="{{ event.project_image.url }}" alt="{{ event.event_name }}" width="300" height="300">
+
+        <hr>
+    </div>
+    {% empty %}
+    <p>No events available at the moment.</p>
+    {% endfor %}
+</body>
+</html>

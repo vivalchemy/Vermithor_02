@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import stripe
 import json
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout,get_user_model
 from django.contrib import messages
 from django.core.exceptions import ValidationError
@@ -60,3 +60,24 @@ def sign_in(request):
 
 def success(request):
     return render(request, 'success.html')
+
+
+# views.py
+
+
+from .models import Donation,Events
+
+def donation_list(request):
+    donations = Donation.objects.all()  # Fetch all donation entries
+    return render(request, 'donation_list.html', {'donations': donations})
+
+
+def donation_detail(request, donation_id):
+    donation = get_object_or_404(Donation, id=donation_id)  # Fetch the specific donation entry
+    return render(request, 'donation_detail.html', {'donation': donation})
+
+
+# events
+def show_events(request):
+    events = Events.objects.all()
+    return render(request, 'events.html', {'events': events})

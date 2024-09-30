@@ -1,0 +1,25 @@
+<!-- donation_list.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation Projects</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Optional CSS -->
+</head>
+<body>
+    <h1>Donation Projects</h1>
+    <div class="donation-list">
+        {% for donation in donations %}
+            <div class="donation-item">
+                <img src="{{ donation.project_image.url }}" alt="{{ donation.project_name }}">
+                <h2><a href="{% url 'donation_detail' donation.id %}">{{ donation.project_name }}</a></h2>
+            </div>
+        {% empty %}
+            <p>No donation projects available.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>

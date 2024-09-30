@@ -136,3 +136,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STRIPE_TEST_PUBLIC_KEY = 'pk_test_51Q4eHVGY7azj7GbIXZlHtK7wvbkX5KzVIMipcCtSfsAvlvaWNd995M31HwwyGvZjXhvW2f96jYfL0zwS22lGlZU000Pit872qf'
 STRIPE_TEST_SECRET_KEY = 'sk_test_51Q4eHVGY7azj7GbI4woOF8fV4cxvsyrGRfiUqz4Cvzlo7k5MUpAhF9VqxS0Js2yTEwZtgv1EZfr2l4500Zm9swvi00crSZkEj0'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'VivApp', 'media')
