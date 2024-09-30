@@ -1,4 +1,3 @@
-
 from django.conf import settings
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -38,8 +37,20 @@ def create_payment_intent(request):
 from .models import Donation,Events
 
 def donation_list(request):
-    donations = Donation.objects.all()  # Fetch all donation entries
-    return render(request, 'donation_list.html', {'donations': donations})
+    donations = Donation.objects.all()
+    donation_data = [
+        {
+            'id': str(donation.id),  # Convert UUID to string
+            'project_image': request.build_absolute_uri(donation.image_url()) if donation.image_url() else None,
+            'project_name': donation.project_name,
+            'total_donation_required': float(donation.total_donation_required),
+            'total_donation_done': float(donation.total_donation_done),
+            'project_description': donation.project_description,
+            'contact_person': donation.contact_person,
+        }
+        for donation in donations
+    ]
+    return JsonResponse({'donations': donation_data}, safe=False)
 
 
 def donation_detail(request, donation_id):
@@ -48,9 +59,24 @@ def donation_detail(request, donation_id):
 
 
 # events
+@csrf_exempt
 def show_events(request):
-    events = Events.objects.all()
-    return render(request, 'events.html', {'events': events})
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        type1 = data.get('eventType')
+        location = data.get('location')
+        
+        events = Events.objects.all()
+        
+        if type1:
+            events = events.filter(type=type1)
+        if location:
+            events = events.filter(location=location)
+        
+        events_data = list(events.values('id', 'event_name', 'type', 'location', 'date', 'event_description'))
+        return JsonResponse({'events': events_data})
+    
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 
 stripe.api_key = settings.STRIPE_TEST_SECRET_KEY

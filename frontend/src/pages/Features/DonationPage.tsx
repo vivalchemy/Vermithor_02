@@ -25,22 +25,20 @@ interface DonationItem {
 // Function to fetch donations
 const fetchDonations = async (): Promise<DonationItem[]> => {
   const response = await axios.get(`${import.meta.env.VITE_API_URL}/donations/`);
-  console.log(response.data);
-  return response.data;
+  console.log(response.data.donations);
+  return response.data.donations;
 };
 
 export function DonationPage() {
-
-
   // Use TanStack Query to fetch donations
-  const { data: donations, isLoading, error } = useQuery({
+  const { data: donations, isLoading, error } = useQuery<DonationItem[]>({
     queryKey: ["donations"],
     queryFn: fetchDonations,
   });
 
   const handleDonate = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically integrate with a payment gateway
+    // Integrate with a payment gateway
     console.log(`Donating 234 to gahgdh`);
     alert("Thank you for your donation!");
   };
@@ -53,25 +51,37 @@ export function DonationPage() {
         <form onSubmit={handleDonate}>
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Handle loading state */}
               {isLoading ? (
                 <p>Loading donations...</p>
               ) : error ? (
                 <p>Error loading donations: {(error as Error).message}</p>
-              ) : (
-                donations?.map((item) => (
+              ) : (donations && donations.length > 0) ? (
+                donations.map((item) => (
                   <Card key={item.id}>
                     <CardHeader>
-                      <CardTitle>{item.title}</CardTitle>
-                      <CardDescription>{item.date} | {item.location}</CardDescription>
+                      <CardTitle>{item.project_name}</CardTitle>
+                      <CardDescription>
+                        {item.total_donation_done} / {item.total_donation_required} raised
+                      </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <p>{item.description}</p>
+                      {item.project_image && (
+                        <img 
+                          src={item.project_image} 
+                          alt={item.project_name} 
+                          className="w-full h-48 object-cover mb-4"
+                        />
+                      )}
+                      <p>{item.project_description}</p>
                     </CardContent>
                     <CardFooter>
                       <Button>Donate</Button>
                     </CardFooter>
                   </Card>
                 ))
+              ) : (
+                <p>No donations available.</p>
               )}
             </div>
           </div>

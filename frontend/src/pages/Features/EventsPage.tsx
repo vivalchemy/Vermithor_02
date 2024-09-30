@@ -18,15 +18,27 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Header } from "@/base components/Header";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+
+const fetchEvents = async ({ eventType, location }: { eventType?: string; location?: string }) => {
+  const response = await axios.post(`${import.meta.env.VITE_API_URL}/events/`, { eventType, location });
+  return response.data.events; // Assuming the API returns an object with an 'events' array
+};
 
 export function EventsPage() {
   const [eventType, setEventType] = useState("");
   const [location, setLocation] = useState("");
 
+  const { data: events, refetch, isLoading, isError } = useQuery({
+    queryKey: ['events', eventType, location],
+    queryFn: () => fetchEvents({ eventType, location }),
+    enabled: false, // This prevents the query from running automatically
+  });
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically fetch events from an API
-    console.log("Searching events with:", { eventType, location });
+    refetch(); // This triggers the query
   };
 
   return (
@@ -63,52 +75,28 @@ export function EventsPage() {
           <Button type="submit">Search Events</Button>
         </form>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* This would typically be populated dynamically */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Class of 2010 Reunion</CardTitle>
-              <CardDescription>June 15, 2024 | Campus Quad</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p>
-                Join us for a nostalgic evening celebrating our alma mater and
-                reconnecting with old friends.
-              </p>
-            </CardContent>
-            <CardFooter>
-              <Button>Register</Button>
-            </CardFooter>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>Tech Industry Networking Night</CardTitle>
-              <CardDescription>July 8, 2024 | Online</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p>
-                Connect with fellow alumni in the tech industry and explore new
-                career opportunities.
-              </p>
-            </CardContent>
-            <CardFooter>
-              <Button>Register</Button>
-            </CardFooter>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>Leadership Workshop</CardTitle>
-              <CardDescription>August 22, 2024 | Alumni Center</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p>
-                Develop your leadership skills with this intensive workshop led
-                by successful alumni.
-              </p>
-            </CardContent>
-            <CardFooter>
-              <Button>Register</Button>
-            </CardFooter>
-          </Card>
+          {isLoading ? (
+            <p>Loading events...</p>
+          ) : isError ? (
+            <p>Error fetching events. Please try again.</p>
+          ) : events && events.length > 0 ? (
+            events.map((event: any) => (
+              <Card key={event.id}>
+                <CardHeader>
+                  <CardTitle>{event.event_name}</CardTitle>
+                  <CardDescription>{event.date} | {event.location}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p>{event.event_description}</p>
+                </CardContent>
+                <CardFooter>
+                  <Button>Register</Button>
+                </CardFooter>
+              </Card>
+            ))
+          ) : (
+            <p>No events found. Try adjusting your search criteria.</p>
+          )}
         </div>
       </div>
     </>

@@ -38,6 +38,9 @@ class Donation(models.Model):
     project_description = models.TextField()
     contact_person = models.CharField(max_length=100)
 
+    def image_url(self):
+        return self.project_image.url if self.project_image else None
+
     def __str__(self):
         return self.project_name
 
@@ -48,6 +51,8 @@ class Events(models.Model):
     date = models.DateField()
     location=models.CharField(max_length=45)
     event_description = models.CharField(max_length=500)
+    choice = [('reunion','Reunion'),('workshop','Workshop'),('seminar','Seminar'),('networking','Networking'),('hackathon', 'Hackathon')]
+    type = models.CharField(max_length=100,choices=choice, default='reunion')
 
     def __str__(self):
         return self.event_name
