@@ -19,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextOverflow
 import coil.request.ImageRequest
 import com.example.almaconnect.R
 
@@ -77,7 +78,7 @@ fun ProjectItem(project: Project) {
     val context = LocalContext.current
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(16.dp)
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -85,8 +86,8 @@ fun ProjectItem(project: Project) {
         ) {
             Box(
                 modifier = Modifier
-                    .size(60.dp)
-                    .clip(RoundedCornerShape(8.dp))
+                    .size(80.dp)
+                    .clip(RoundedCornerShape(16.dp))
                     .background(MaterialTheme.colorScheme.secondaryContainer),
                 contentAlignment = Alignment.Center
             ) {
@@ -100,27 +101,68 @@ fun ProjectItem(project: Project) {
                     contentDescription = "Project Image",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .size(48.dp)
-                        .clip(RoundedCornerShape(8.dp))
+                        .size(60.dp)
+                        .clip(RoundedCornerShape(12.dp))
                 )
             }
             Spacer(modifier = Modifier.width(16.dp))
             Column {
-                Text(text = project.name, fontWeight = FontWeight.Bold, fontSize = 18.sp)
-                Text(text = project.description, fontSize = 14.sp)
+                Text(
+                    text = project.name,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                )
+                Text(
+                    text = project.description,
+                    fontSize = 14.sp,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Donated",
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    LinearProgressIndicator(
+                        progress = { project.amountCollected.toFloat() / project.totalDonationLimit },
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(8.dp)
+                            .clip(RoundedCornerShape(4.dp)),
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "${project.amountCollected}/${project.totalDonationLimit}",
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
         }
     }
 }
 
-data class Project(val name: String, val description: String, val imageUrl: String?)
+data class Project(
+    val name: String,
+    val description: String,
+    val imageUrl: String?,
+    val amountCollected: Int,
+    val totalDonationLimit: Int
+)
 
 fun generateDummyProjects(): List<Project> {
     return List(5) { index ->
         Project(
             name = "Project Name ${index + 1}",
             description = "Short project description ${index + 1}",
-            imageUrl = null // Replace with actual URLs when available
+            imageUrl = null, // Replace with actual URLs when available
+            amountCollected = index * 1000,
+            totalDonationLimit = 10000
         )
     }
 }
