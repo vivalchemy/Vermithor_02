@@ -8,9 +8,10 @@ function App() {
 
   return (
     <ThemeProvider>
-      <ModeToggle />
+      <ModeToggle />  
       <Button>Hello</Button>
       <WebSocketComponent/>
+     
     </ThemeProvider>
   )
 }
