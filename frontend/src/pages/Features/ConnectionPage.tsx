@@ -46,7 +46,7 @@ export function ConnectionPage() {
       setForumMessages((prevMessages) => [...prevMessages, message]);
     });
 
-    newSocket.on("privateMessage", ({ senderId, message }) => {
+    newSocket.on("privateMessage", (senderId, message) => {
       setOneToOneMessages((prev) => ({
         ...prev,
         [senderId]: [...(prev[senderId] || []), message],
@@ -131,10 +131,9 @@ export function ConnectionPage() {
               <CardTitle>
                 {activeChat === "forum"
                   ? "Forum Chat"
-                  : `Chat with ${
-                      connections.find((c) => c.id.toString() === activeChat)
-                        ?.name
-                    }`}
+                  : `Chat with ${connections.find((c) => c.id.toString() === activeChat)
+                    ?.name
+                  }`}
               </CardTitle>
               {activeChat !== "forum" && (
                 <Button
@@ -155,9 +154,8 @@ export function ConnectionPage() {
                 ).map((msg) => (
                   <div
                     key={msg.id}
-                    className={`mb-2 ${
-                      msg.sender === "You" ? "text-right" : ""
-                    }`}
+                    className={`mb-2 ${msg.sender === "You" ? "text-right" : ""
+                      }`}
                   >
                     <span className="font-bold">{msg.sender}: </span>
                     <span>{msg.text}</span>
