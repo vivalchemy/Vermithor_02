@@ -15,10 +15,10 @@ const Hero = () => {
         </div>
 
         <div>
-          <h1 className={`${styles.heroHeadText} text-white`}>
+          <h1 className={`text-black dark:text-white text-[50px] font-bold`}>
             Welcome, to <span className='text-[#915EFF]'>AlumniConnect</span>
           </h1>
-          <p className={`${styles.heroSubText} mt-2 text-white-100`}>
+          <p className={`font-medium lg:text-[30px] sm:text-[26px] xs:text-[20px] text-[16px] lg:leading-[40px] mt-2 text-muted-foreground`}>
             Reconnect with your alma mater and fellow alumni <br className='sm:block hidden mt-10' />
             Stay updated, share memories, and strengthen your lifelong community.
           </p>
