@@ -59,6 +59,7 @@ export function EventsPage() {
                   <SelectItem value="networking">Networking</SelectItem>
                   <SelectItem value="workshop">Workshop</SelectItem>
                   <SelectItem value="seminar">Seminar</SelectItem>
+                  <SelectItem value="hackathon">Hackathon</SelectItem>
                 </SelectContent>
               </Select>
             </div>

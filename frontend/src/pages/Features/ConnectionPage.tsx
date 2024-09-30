@@ -1,14 +1,8 @@
-import { useState } from "react";
+//@ts-nocheck
+
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import {
   Card,
   CardContent,
@@ -16,100 +10,241 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Send, Users, ArrowLeft } from "lucide-react";
+import { io, Socket } from "socket.io-client";
 import { Header } from "@/base components/Header";
 
 export function ConnectionPage() {
-  const [industry, setIndustry] = useState("");
-  const [location, setLocation] = useState("");
-  const [interests, setInterests] = useState("");
+  const [forumMessages, setForumMessages] = useState([
+    {
+      id: 1,
+      sender: "John Doe",
+      text: "Hello everyone! Any AI enthusiasts here?",
+    },
+    {
+      id: 2,
+      sender: "Jane Smith",
+      text: "Hi John! I'm working on a machine learning project.",
+    },
+  ]);
+  const [oneToOneMessages, setOneToOneMessages] = useState({});
+  const [currentMessage, setCurrentMessage] = useState("");
+  const [activeChat, setActiveChat] = useState("forum");
+  const [socket, setSocket] = useState<Socket | null>(null);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Here you would typically fetch matching alumni/students from an API
-    console.log("Searching for connections with:", {
-      industry,
-      location,
-      interests,
+  useEffect(() => {
+    const newSocket = io("http://localhost:3001"); // Adjust the URL to match your backend
+    setSocket(newSocket);
+
+    newSocket.on("connect", () => {
+      console.log("Connected to server");
     });
+
+    newSocket.on("forumMessage", (message) => {
+      setForumMessages((prevMessages) => [...prevMessages, message]);
+    });
+
+    newSocket.on("privateMessage", ({ senderId, message }) => {
+      setOneToOneMessages((prev) => ({
+        ...prev,
+        [senderId]: [...(prev[senderId] || []), message],
+      }));
+    });
+
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
+
+  const connections = [
+    {
+      id: 1,
+      name: "John Doe",
+      role: "AI Researcher",
+      location: "San Francisco, CA",
+    },
+    {
+      id: 2,
+      name: "Jane Smith",
+      role: "Data Scientist",
+      location: "New York, NY",
+    },
+    {
+      id: 3,
+      name: "Alice Johnson",
+      role: "Software Engineer",
+      location: "London, UK",
+    },
+  ];
+
+  const handleSendMessage = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (currentMessage.trim() && socket) {
+      const message = { id: Date.now(), sender: "You", text: currentMessage };
+      if (activeChat === "forum") {
+        socket.emit("forumMessage", message);
+        setForumMessages((prevMessages) => [...prevMessages, message]);
+      } else {
+        socket.emit("privateMessage", { recipientId: activeChat, message });
+        setOneToOneMessages((prev) => ({
+          ...prev,
+          [activeChat]: [...(prev[activeChat] || []), message],
+        }));
+      }
+      setCurrentMessage("");
+    }
+  };
+
+  const handleConnect = (id: number, name: string) => {
+    setActiveChat(id.toString());
+    if (!oneToOneMessages[id] && socket) {
+      const initialMessage = {
+        id: Date.now(),
+        sender: name,
+        text: `Hello! I'm ${name}. How can I help you?`,
+      };
+      socket.emit("privateMessage", {
+        recipientId: id.toString(),
+        message: initialMessage,
+      });
+      setOneToOneMessages((prev) => ({
+        ...prev,
+        [id]: [initialMessage],
+      }));
+    }
+  };
+
+  const handleReturnToForum = () => {
+    setActiveChat("forum");
   };
 
   return (
     <>
       <Header />
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6">
-          Connect with Alumni and Students
-        </h1>
+      <div className="container mx-auto p-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div>
-            <form onSubmit={handleSearch} className="space-y-4">
-              <div>
-                <Label htmlFor="industry">Industry</Label>
-                <Select onValueChange={setIndustry} required>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select an industry" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="tech">Technology</SelectItem>
-                    <SelectItem value="finance">Finance</SelectItem>
-                    <SelectItem value="healthcare">Healthcare</SelectItem>
-                    <SelectItem value="education">Education</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="location">Location</Label>
+          {/* Forum and One-to-One Chat */}
+          <Card className="h-[600px] flex flex-col">
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle>
+                {activeChat === "forum"
+                  ? "Forum Chat"
+                  : `Chat with ${
+                      connections.find((c) => c.id.toString() === activeChat)
+                        ?.name
+                    }`}
+              </CardTitle>
+              {activeChat !== "forum" && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleReturnToForum}
+                >
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Return to Forum
+                </Button>
+              )}
+            </CardHeader>
+            <CardContent className="flex-grow flex flex-col">
+              <ScrollArea className="flex-grow mb-4">
+                {(activeChat === "forum"
+                  ? forumMessages
+                  : oneToOneMessages[activeChat] || []
+                ).map((msg) => (
+                  <div
+                    key={msg.id}
+                    className={`mb-2 ${
+                      msg.sender === "You" ? "text-right" : ""
+                    }`}
+                  >
+                    <span className="font-bold">{msg.sender}: </span>
+                    <span>{msg.text}</span>
+                  </div>
+                ))}
+              </ScrollArea>
+              <form onSubmit={handleSendMessage} className="flex gap-2">
                 <Input
-                  id="location"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  placeholder="City, State, or Country"
+                  value={currentMessage}
+                  onChange={(e) => setCurrentMessage(e.target.value)}
+                  placeholder="Type your message..."
+                  className="flex-grow"
                 />
-              </div>
-              <div>
-                <Label htmlFor="interests">Interests</Label>
-                <Input
-                  id="interests"
-                  value={interests}
-                  onChange={(e) => setInterests(e.target.value)}
-                  placeholder="e.g., Mentoring, Networking, Research"
-                />
-              </div>
-              <Button type="submit" className="w-full">
-                Search Connections
-              </Button>
-            </form>
-          </div>
-          <div>
-            <h2 className="text-2xl font-semibold mb-4">
-              Suggested Connections
-            </h2>
-            <div className="space-y-4">
-              {/* This would typically be populated dynamically */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>John Doe</CardTitle>
-                  <CardDescription>
-                    Technology | San Francisco, CA
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p>Interests: Mentoring, AI, Startups</p>
-                  <Button className="mt-2">Connect</Button>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Jane Smith</CardTitle>
-                  <CardDescription>Finance | New York, NY</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p>Interests: Investment Banking, Networking</p>
-                  <Button className="mt-2">Connect</Button>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
+                <Button type="submit">
+                  <Send className="h-4 w-4" />
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+
+          {/* Connections */}
+          <Card className="h-[600px]">
+            <CardHeader>
+              <CardTitle>Alumni Connections</CardTitle>
+              <CardDescription>
+                Connect with alumni for one-to-one chats
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Tabs defaultValue="all" className="w-full">
+                <TabsList>
+                  <TabsTrigger value="all">All</TabsTrigger>
+                  <TabsTrigger value="connected">Connected</TabsTrigger>
+                </TabsList>
+                <TabsContent value="all">
+                  <ScrollArea className="h-[400px]">
+                    {connections.map((connection) => (
+                      <Card key={connection.id} className="mb-4">
+                        <CardHeader>
+                          <CardTitle>{connection.name}</CardTitle>
+                          <CardDescription>
+                            {connection.role} | {connection.location}
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <Button
+                            onClick={() =>
+                              handleConnect(connection.id, connection.name)
+                            }
+                          >
+                            {oneToOneMessages[connection.id]
+                              ? "Continue Chat"
+                              : "Connect"}
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </ScrollArea>
+                </TabsContent>
+                <TabsContent value="connected">
+                  <ScrollArea className="h-[400px]">
+                    {connections
+                      .filter((c) => oneToOneMessages[c.id])
+                      .map((connection) => (
+                        <Card key={connection.id} className="mb-4">
+                          <CardHeader>
+                            <CardTitle>{connection.name}</CardTitle>
+                            <CardDescription>
+                              {connection.role} | {connection.location}
+                            </CardDescription>
+                          </CardHeader>
+                          <CardContent>
+                            <Button
+                              onClick={() =>
+                                handleConnect(connection.id, connection.name)
+                              }
+                            >
+                              Continue Chat
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      ))}
+                  </ScrollArea>
+                </TabsContent>
+              </Tabs>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </>
