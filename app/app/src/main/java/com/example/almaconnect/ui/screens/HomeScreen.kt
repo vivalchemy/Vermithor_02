@@ -3,10 +3,10 @@ package com.example.almaconnect.ui.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -14,58 +14,89 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen() {
+    var isScreenVisible by remember { mutableStateOf(false) }
+
     Scaffold(
-//        topBar = {
-//            TopAppBar(
-//                title = { Text("Home") },
-//                colors = TopAppBarDefaults.topAppBarColors(
-//                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-//                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-//                )
-//            )
-//        }
+        // You can uncomment the top bar if needed
+        // topBar = {
+        //    TopAppBar(
+        //        title = { Text("Home") },
+        //        colors = TopAppBarDefaults.topAppBarColors(
+        //            containerColor = MaterialTheme.colorScheme.primaryContainer,
+        //            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+        //        )
+        //    )
+        // }
     ) { innerPadding ->
-        LazyColumn(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            item {
-                Text(
-                    text = "News",
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                NewsSection()
+            // LazyColumn is wrapped by Box
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                item {
+                    Text(
+                        text = "News",
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    NewsSection()
+                }
+
+                item {
+                    SearchBar()
+                }
+
+                item {
+                    Text(
+                        text = "Events",
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+
+                items(10) {
+                    EventItem()
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
             }
 
-            item {
-                SearchBar()
-            }
-
-            item {
-                Text(
-                    text = "Events",
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-            }
-
-            items(10) {
-                EventItem()
-                Spacer(modifier = Modifier.height(8.dp))
-            }
+            // Floating Action Button positioned at the bottom-end of the Box
+            ExtendedFloatingActionButton(
+                text = { Text("Propose Event") },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = null
+                    )
+                },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd) // Aligns the FAB at the bottom-end of the Box
+                    .padding(16.dp),
+                onClick = { /* Handle FAB click */ }
+            )
         }
     }
 }
+
 
 @Composable
 fun NewsSection() {
