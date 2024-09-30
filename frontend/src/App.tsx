@@ -7,6 +7,9 @@ import { EventsPage } from './pages/Features/EventsPage';
 import { ThemeProvider } from './components/theme-provider';
 import './App.css';
 import LoginSignup from './pages/Login_Signup/LoginSignup';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   { path: '/', element: <HomePage /> },
@@ -20,7 +23,9 @@ const router = createBrowserRouter([
 export const App = () => {
   return (
     <ThemeProvider>
-      <RouterProvider router={router} />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
     </ThemeProvider>
   )
 }

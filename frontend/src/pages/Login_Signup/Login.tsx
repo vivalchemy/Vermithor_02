@@ -9,7 +9,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 type FormData = {
@@ -21,15 +20,17 @@ type FormData = {
 };
 
 export const Login = () => {
-  const [userType, setUserType] = useState<"alumni" | "student">("alumni");
-
   const {
     register,
     handleSubmit,
+    setValue, // Added to programmatically set userType
     watch,
     formState: { errors, isSubmitting },
-  
-  } = useForm<FormData>();
+  } = useForm<FormData>({
+    defaultValues: {
+      userType: "alumni", // Setting default value for userType
+    },
+  });
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
     console.log(data);
@@ -46,10 +47,9 @@ export const Login = () => {
             <Label htmlFor="user-type">I am a</Label>
             <Select
               onValueChange={(value: "alumni" | "student") => {
-                setUserType(value);
-                register("userType").onChange({ target: { value } });
+                setValue("userType", value); // Set the userType value in react-hook-form
               }}
-              defaultValue={userType}
+              defaultValue="alumni" // Default value for Select component
             >
               <SelectTrigger id="user-type">
                 <SelectValue placeholder="Select user type" />
@@ -60,7 +60,7 @@ export const Login = () => {
               </SelectContent>
             </Select>
           </div>
-          {userType === "alumni" && (
+          {watch("userType") === "alumni" && ( // Watching for userType change
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="graduation-year">Graduation Year</Label>
               <Input
@@ -81,7 +81,7 @@ export const Login = () => {
               )}
             </div>
           )}
-          {userType === "student" && (
+          {watch("userType") === "student" && ( // Watching for userType change
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="expected-graduation">
                 Expected Graduation Year
@@ -109,7 +109,7 @@ export const Login = () => {
             <Input
               id="login-email"
               placeholder="Enter your email"
-              {...register("email", { 
+              {...register("email", {
                 required: "Email is required",
                 pattern: {
                   value: /\S+@\S+\.\S+/,
@@ -127,7 +127,7 @@ export const Login = () => {
               id="login-password"
               type="password"
               placeholder="Enter your password"
-              {...register("password", { 
+              {...register("password", {
                 required: "Password is required",
                 minLength: {
                   value: 8,
@@ -140,7 +140,9 @@ export const Login = () => {
             )}
           </div>
           <CardFooter className="flex justify-between">
-            <Button variant="outline" type="button">Cancel</Button>
+            <Button variant="outline" type="button">
+              Cancel
+            </Button>
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? "Submitting..." : "Submit"}
             </Button>
