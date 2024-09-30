@@ -12,23 +12,8 @@ from .forms import SignInForm
 
 
 
-stripe.api_key = settings.STRIPE_TEST_SECRET_KEY
 
-@csrf_exempt
-def create_payment_intent(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        amount = data.get('amount', 5000)  # Amount in cents ($50.00)
-        currency = 'usd'
-        
-        payment_intent = stripe.PaymentIntent.create(
-            amount=amount,
-            currency=currency,
-        )
-        
-        return JsonResponse({
-            'clientSecret': payment_intent['client_secret']
-        })
+
 
 
 # views.py
@@ -54,8 +39,17 @@ def donation_list(request):
 
 
 def donation_detail(request, donation_id):
-    donation = get_object_or_404(Donation, id=donation_id)  # Fetch the specific donation entry
-    return render(request, 'donation_detail.html', {'donation': donation})
+    donation = get_object_or_404(Donation, id=donation_id)
+    donation_data = {
+        'id': str(donation.id),
+        'project_image': request.build_absolute_uri(donation.image_url()) if donation.image_url() else None,
+        'project_name': donation.project_name,
+        'total_donation_required': float(donation.total_donation_required),
+        'total_donation_done': float(donation.total_donation_done),
+        'project_description': donation.project_description,
+        'contact_person': donation.contact_person,
+    }
+    return JsonResponse(donation_data)
 
 
 # events

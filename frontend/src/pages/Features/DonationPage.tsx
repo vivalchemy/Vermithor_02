@@ -1,4 +1,3 @@
-// import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,6 +10,7 @@ import {
 import { Header } from "@/base components/Header";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 interface DonationItem {
   id: string;                             // ID is a string
@@ -30,17 +30,15 @@ const fetchDonations = async (): Promise<DonationItem[]> => {
 };
 
 export function DonationPage() {
+  const navigate = useNavigate();
   // Use TanStack Query to fetch donations
   const { data: donations, isLoading, error } = useQuery<DonationItem[]>({
     queryKey: ["donations"],
     queryFn: fetchDonations,
   });
 
-  const handleDonate = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Integrate with a payment gateway
-    console.log(`Donating 234 to gahgdh`);
-    alert("Thank you for your donation!");
+  const handleDonateClick = (donationId: string) => {
+    navigate(`/donate/${donationId}`);
   };
 
   return (
@@ -48,44 +46,42 @@ export function DonationPage() {
       <Header />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-3xl font-bold mb-6 text-center">Donate to College Projects</h1>
-        <form onSubmit={handleDonate}>
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* Handle loading state */}
-              {isLoading ? (
-                <p>Loading donations...</p>
-              ) : error ? (
-                <p>Error loading donations: {(error as Error).message}</p>
-              ) : (donations && donations.length > 0) ? (
-                donations.map((item) => (
-                  <Card key={item.id}>
-                    <CardHeader>
-                      <CardTitle>{item.project_name}</CardTitle>
-                      <CardDescription>
-                        {item.total_donation_done} / {item.total_donation_required} raised
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      {item.project_image && (
-                        <img 
-                          src={item.project_image} 
-                          alt={item.project_name} 
-                          className="w-full h-48 object-cover mb-4"
-                        />
-                      )}
-                      <p>{item.project_description}</p>
-                    </CardContent>
-                    <CardFooter>
-                      <Button>Donate</Button>
-                    </CardFooter>
-                  </Card>
-                ))
-              ) : (
-                <p>No donations available.</p>
-              )}
-            </div>
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Handle loading state */}
+            {isLoading ? (
+              <p>Loading donations...</p>
+            ) : error ? (
+              <p>Error loading donations: {(error as Error).message}</p>
+            ) : (donations && donations.length > 0) ? (
+              donations.map((item) => (
+                <Card key={item.id}>
+                  <CardHeader>
+                    <CardTitle>{item.project_name}</CardTitle>
+                    <CardDescription>
+                      {item.total_donation_done} / {item.total_donation_required} raised
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {item.project_image && (
+                      <img 
+                        src={item.project_image} 
+                        alt={item.project_name} 
+                        className="w-full h-48 object-cover mb-4"
+                      />
+                    )}
+                    <p>{item.project_description}</p>
+                  </CardContent>
+                  <CardFooter>
+                    <Button onClick={() => handleDonateClick(item.id)}>Donate</Button>
+                  </CardFooter>
+                </Card>
+              ))
+            ) : (
+              <p>No donations available.</p>
+            )}
           </div>
-        </form>
+        </div>
       </div>
     </>
   );

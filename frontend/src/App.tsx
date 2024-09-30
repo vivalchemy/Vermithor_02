@@ -8,6 +8,7 @@ import { ThemeProvider } from './components/theme-provider';
 import './App.css';
 import LoginSignup from './pages/Login_Signup/LoginSignup';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import WrappedDonationDetailPage from './pages/Features/DonationDetailPage';
 
 const queryClient = new QueryClient();
 
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
   { path: '/directory', element: <DirectoryPage /> },
   { path: '/events', element: <EventsPage /> },
   { path: '/login', element: <LoginSignup /> },
+  { path: '/donate/:id', element: <WrappedDonationDetailPage /> },
 ]);
 
 export const App = () => {
