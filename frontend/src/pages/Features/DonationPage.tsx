@@ -44,8 +44,8 @@ export function DonationPage() {
   return (
     <>
       <Header />
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6 text-center">Donate to College Projects</h1>
+      <div className=" px-16 py-8 bg-background">
+        <h1 className="text-3xl font-bold mb-6 text-center text-foreground">Donate to College Projects</h1>
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Handle loading state */}
@@ -64,9 +64,9 @@ export function DonationPage() {
                   </CardHeader>
                   <CardContent>
                     {item.project_image && (
-                      <img 
-                        src={item.project_image} 
-                        alt={item.project_name} 
+                      <img
+                        src={item.project_image}
+                        alt={item.project_name}
                         className="w-full h-48 object-cover mb-4"
                       />
                     )}

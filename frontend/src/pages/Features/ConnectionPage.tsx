@@ -61,22 +61,23 @@ export function ConnectionPage() {
   const connections = [
     {
       id: 1,
-      name: "John Doe",
+      name: "Ravi Sharma",
       role: "AI Researcher",
-      location: "San Francisco, CA",
+      location: "Bangalore, India",
     },
     {
       id: 2,
-      name: "Jane Smith",
+      name: "Ananya Gupta",
       role: "Data Scientist",
-      location: "New York, NY",
+      location: "Mumbai, India",
     },
     {
       id: 3,
-      name: "Alice Johnson",
+      name: "Aarav Desai",
       role: "Software Engineer",
-      location: "London, UK",
-    },
+      location: "Hyderabad, India",
+    }
+
   ];
 
   const handleSendMessage = (e: React.FormEvent) => {
@@ -123,10 +124,10 @@ export function ConnectionPage() {
   return (
     <>
       <Header />
-      <div className="container mx-auto p-4">
+      <div className="mx-auto p-16 bg-background">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Forum and One-to-One Chat */}
-          <Card className="h-[600px] flex flex-col">
+          <Card className="h-[600px] flex flex-col bg-slate-100 dark:bg-slate-800">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle>
                 {activeChat === "forum"
@@ -167,7 +168,7 @@ export function ConnectionPage() {
                   value={currentMessage}
                   onChange={(e) => setCurrentMessage(e.target.value)}
                   placeholder="Type your message..."
-                  className="flex-grow"
+                  className="flex-grow bg-background p-2"
                 />
                 <Button type="submit">
                   <Send className="h-4 w-4" />
