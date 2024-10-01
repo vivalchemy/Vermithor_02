@@ -44,27 +44,27 @@ export function EventsPage() {
   return (
     <>
       <Header />
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-6">Alumni Events</h1>
+      <div className="mx-auto px-8 py-8 bg-background">
+        <h1 className="text-3xl font-bold mb-6 text-foreground">Alumni Events</h1>
         <form onSubmit={handleSearch} className="mb-8 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="eventType">Event Type</Label>
+              <Label htmlFor="eventType" className="text-muted-foreground">Event Type</Label>
               <Select onValueChange={setEventType}>
-                <SelectTrigger>
+                <SelectTrigger className="text-muted-foreground">
                   <SelectValue placeholder="Select event type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="reunion">Reunion</SelectItem>
-                  <SelectItem value="networking">Networking</SelectItem>
-                  <SelectItem value="workshop">Workshop</SelectItem>
-                  <SelectItem value="seminar">Seminar</SelectItem>
-                  <SelectItem value="hackathon">Hackathon</SelectItem>
+                  <SelectItem className="text-foreground" value="reunion">Reunion</SelectItem>
+                  <SelectItem className="text-foreground" value="networking">Networking</SelectItem>
+                  <SelectItem className="text-foreground" value="workshop">Workshop</SelectItem>
+                  <SelectItem className="text-foreground" value="seminar">Seminar</SelectItem>
+                  <SelectItem className="text-foreground" value="hackathon">Hackathon</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div>
-              <Label htmlFor="location">Location</Label>
+              <Label htmlFor="location" className="text-muted-foreground">Location</Label>
               <Input
                 id="location"
                 value={location}
@@ -96,7 +96,7 @@ export function EventsPage() {
               </Card>
             ))
           ) : (
-            <p>No events found. Try adjusting your search criteria.</p>
+            <p className="text-foreground">No events found. Try adjusting your search criteria.</p>
           )}
         </div>
       </div>
