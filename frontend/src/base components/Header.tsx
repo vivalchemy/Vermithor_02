@@ -17,38 +17,42 @@ export function Header() {
             </Link>
             <nav>
               <ul className="flex space-x-20 items-center">
-                <li>
-                  <Link
-                    to="/donate"
-                    className="hover:text-[#d3d3d3] text-white"
-                  >
-                    Donate
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/connect"
-                    className="hover:text-[#d3d3d3] text-white"
-                  >
-                    Connect
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/directory"
-                    className="hover:text-[#d3d3d3] text-white"
-                  >
-                    Directory
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/events"
-                    className="hover:text-[#d3d3d3] text-white"
-                  >
-                    Events
-                  </Link>
-                </li>
+                {isAuthenticated && (
+                  <>
+                    <li>
+                      <Link
+                        to="/donate"
+                        className="hover:text-[#d3d3d3] text-white"
+                      >
+                        Donate
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/connect"
+                        className="hover:text-[#d3d3d3] text-white"
+                      >
+                        Connect
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/directory"
+                        className="hover:text-[#d3d3d3] text-white"
+                      >
+                        Directory
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/events"
+                        className="hover:text-[#d3d3d3] text-white"
+                      >
+                        Events
+                      </Link>
+                    </li>
+                  </>
+                )}
                 <li>
                   <div className="flex gap-4">
                     <ModeToggle />

@@ -133,9 +133,10 @@ export function DonationDetailPage() {
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder="Enter amount"
+                    className="mb-7"
                   />
                   <CardElement />
-                  <button
+                  <Button
                     type="submit"
                     style={{
                       padding: "10px 20px",
@@ -146,11 +147,11 @@ export function DonationDetailPage() {
                       cursor: "pointer",
                       fontSize: "16px",
                       width: "100%",
-                      marginTop: "10px",
+                      marginTop: "30px",
                     }}
                   >
                     Pay Now
-                  </button>
+                  </Button>
                 </form>
               </DialogContent>
             </Dialog>
