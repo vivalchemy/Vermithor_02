@@ -2,7 +2,6 @@ import React from "react";
 import Tilt from "react-tilt";
 import { motion } from "framer-motion";
 
-import { styles } from "../../lib/styles";
 import { services } from "../../lib/data";
 import { SectionWrapper } from "./SectionWrapper";
 import { fadeIn, textVariant } from "../../lib/utils";
@@ -53,7 +52,7 @@ const ServiceCard = ({ index, title, icon, description, rightIcon, flip }) => ( 
 
         </div>
         {/* Right Image */}
-        <div className='w-[280px] h-[280px] object-contain ml-4'>
+        <div className='object-contain w-1/2 h-full'>
           <img
             src={rightIcon} // Use rightIcon prop for the right image
             alt="Right Icon" // Add appropriate alt text

@@ -23,6 +23,8 @@ import {
   jobit,
   tripguide,
   threejs,
+  connect,
+  events,
 } from "../assets";
 
 export const navLinks = [
@@ -54,7 +56,7 @@ const services = [
     icon: mobile,
     description:
       "A networking platform that facilitates direct connections between alumni and current students or fellow alumni seeking guidance. Get career advice, mentorship, and insights from experienced professionals in various fields, and strengthen your professional network through meaningful relationships.",
-    leftIcon: creator,
+    rightIcon: connect,
     flip: true,
   },
   {
@@ -62,7 +64,7 @@ const services = [
     icon: backend,
     description:
       "Stay informed and never miss an important event with the alumni event calendar. Track upcoming reunions, networking opportunities, and social gatherings organized by your alma mater, ensuring you're always connected and engaged with your alumni community.",
-    leftIcon: creator,
+    rightIcon: creator,
     flip: false,
   },
   {
@@ -70,7 +72,7 @@ const services = [
     icon: creator,
     description:
       "Easily access and participate in a variety of alumni-organized events through the EventLink platform. From virtual meetups to in-person gatherings, this hub offers a seamless way to stay involved and join events hosted by alumni groups worldwide.",
-    leftIcon: creator,
+    rightIcon: events,
     flip: true,
   },
 ];
