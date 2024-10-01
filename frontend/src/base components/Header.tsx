@@ -2,8 +2,10 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
 import { useNavigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export function Header() {
+  const { logout, isAuthenticated, loginWithRedirect, user } = useAuth0();
   const navigate = useNavigate();
   return (
     <>
@@ -49,13 +51,35 @@ export function Header() {
                 </li>
                 <li>
                   <div className="flex gap-4">
-                    <Button
-                      variant="secondary"
-                      onClick={() => navigate("/login")}
-                    >
-                      Login
-                    </Button>
                     <ModeToggle />
+                    {isAuthenticated && (
+                      <div className="w-8 h-8 rounded-full overflow-hidden">
+                        <img
+                          src={user?.picture}
+                          alt={user?.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                    {isAuthenticated ? (
+                      <Button
+                        variant="secondary"
+                        onClick={() =>
+                          logout({
+                            logoutParams: { returnTo: window.location.origin },
+                          })
+                        }
+                      >
+                        Log Out
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="secondary"
+                        onClick={() => loginWithRedirect()}
+                      >
+                        Login
+                      </Button>
+                    )}
                   </div>
                 </li>
               </ul>
