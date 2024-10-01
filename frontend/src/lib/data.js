@@ -25,6 +25,7 @@ import {
   threejs,
   connect,
   events,
+  donate,
 } from "../assets";
 
 export const navLinks = [
@@ -48,7 +49,7 @@ const services = [
     icon: web,
     description:
       "A dedicated platform where alumni can give back to their alma mater through financial contributions, volunteering, and offering support for various institutional initiatives. Engage in meaningful ways to contribute to scholarships, programs, and more, while fostering a sense of community and growth.",
-    rightIcon: creator,
+    rightIcon: donate,
     flip: false,
   },
   {

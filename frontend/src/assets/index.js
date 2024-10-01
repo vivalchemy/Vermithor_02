@@ -27,6 +27,7 @@ import starbucks from "./company/starbucks.png";
 import tesla from "./company/tesla.png";
 import connect from "./01Oct24_09h28m31s.png";
 import events from "./01Oct24_09h39m47s.png";
+import donate from "./01Oct24_10h03m07s.png";
 
 import carrent from "./carrent.png";
 import jobit from "./jobit.png";
@@ -63,4 +64,5 @@ export {
   tripguide,
   connect,
   events,
+  donate,
 };
