@@ -35,14 +35,6 @@ export function Header() {
                 </li>
                 <li>
                   <Link
-                    to="/directory"
-                    className="hover:text-[#d3d3d3] text-white"
-                  >
-                    Directory
-                  </Link>
-                </li>
-                <li>
-                  <Link
                     to="/events"
                     className="hover:text-[#d3d3d3] text-white"
                   >
