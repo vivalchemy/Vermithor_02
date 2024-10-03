@@ -1,6 +1,6 @@
 # AlumniConnect
 
-![AlumniConnect Banner](assets/1.jpeg)
+![AlumniConnect Banner](assets/4.jpeg)
 
 ## Table of Contents
 
