@@ -2,6 +2,12 @@
 
 ![AlumniConnect Banner](assets/4.jpeg)
 
+## Collaborators
+
+- [@Pratyay Koley](https://github.com/PratyayKoley)
+- [@Ronit Naik](https://github.com/RonitNaik122)
+- [@Badal Singh](https://github.com/BadalSingh2)
+
 ## Table of Contents
 
 - [Introduction](#introduction)
@@ -120,12 +126,6 @@ Build and Run:
 ![Android Application](assets/6.jpeg)
 ![Android Application](assets/7.jpeg)
 ![Android Application](assets/8.jpeg)
-
-## Collaborators
-
-- [@Pratyay Koley](https://github.com/PratyayKoley)
-- [@Ronit Naik](https://github.com/RonitNaik122)
-- [@Badal Singh](https://github.com/BadalSingh2)
 
 ## License
 
