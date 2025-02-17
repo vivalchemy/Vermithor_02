@@ -56,7 +56,7 @@
 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/yourusername/AlumniConnect.git
+   git clone https://github.com/vivalchemy/AlumniConnect.git
    cd AlumniConnect
 
 2. Cd into the frontend directory and install the dependencies:
